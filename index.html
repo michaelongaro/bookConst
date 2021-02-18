@@ -1,0 +1,43 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>JS Library</title>
+
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <div class="outerLibrary">
+
+          <button id="new-book">Add New Book</button>
+          <form id="newBookForm" style="display: none;">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="booktitle" placeholder="Book's Title...">
+        
+            <label for="author">Author</label>
+            <input type="text" id="author" name="author" placeholder="Book's Author...">
+
+            <label for="pagelength">Number of Pages</label>
+            <input type="number" id="pagelength" name="pagelength">
+
+            <label for="finishedreading">Have you read this book?</label><br>
+            <input type="checkbox" id="finishedreading" name="finishedreading" value="complete">
+        
+            <input type="submit" value="Submit">
+           </form>
+        </div>
+
+
+    </div>
+
+
+
+  <script src="scripts.js"></script>
+</body>
+</html>
