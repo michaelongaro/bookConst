@@ -12,9 +12,15 @@ function Book(title, author, pages, have_read) {
 
 // submit button on the form will call this function i guess
 // will also need to remove '.introText' class/text visibility once book is added
+// not sure where to comment this but could keep layout, and have page scroll down to where the cards 
+//      currently are to make things a bit easier. might have to change '.introText' a bit after though.
 function addBookToLibrary(title, author, pages, have_read) {
-  myLibrary.append(new Book(title, author, pages, have_read));
+  myLibrary.push(new Book(title, author, pages, have_read));
   console.log(myLibrary);
+
+  // will need to add dynamic functionality of paradigm (XD) below up here to properly display new books.
+
+
 }
 
 
