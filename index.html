@@ -8,30 +8,67 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
 
     <div class="wrapper">
+
+      <div class="introText">
+        Hello! Welcome to your personalized library.
+        <br>
+        To get started, click the button below to add your first book!
+
+        <div class="outer">
+          <a href="#" id="button" class="button">Add New Book</a>
+        </div>
+      </div>
+
         <div class="outerLibrary">
 
-          <button id="new-book">Add New Book</button>
-          <form id="newBookForm" style="display: none;">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="booktitle" placeholder="Book's Title...">
-        
-            <label for="author">Author</label>
-            <input type="text" id="author" name="author" placeholder="Book's Author...">
+          
 
-            <label for="pagelength">Number of Pages</label>
-            <input type="number" id="pagelength" name="pagelength">
 
-            <label for="finishedreading">Have you read this book?</label><br>
-            <input type="checkbox" id="finishedreading" name="finishedreading" value="complete">
-        
-            <input type="submit" value="Submit">
-           </form>
+
+
+
+
+
         </div>
+          <!--<button id="new-book">Add New Book</button>-->
+          
+
+          <div class="bg-modal">
+            <div class="modal-content">
+
+              <div class="close">+</div>
+              <img id="stockBook" src="https://img.flaticon.com/icons/png/512/29/29302.png?size=1200x630f&pad=10,10,10,10&ext=png&bg=FFFFFFFF" alt="">
+              
+              <form action="" id="newBookForm">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="booktitle" placeholder="Book's Title...">
+            
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" placeholder="Book's Author...">
+    
+                <label for="pagelength">Number of Pages</label>
+                <input type="number" id="pagelength" name="pagelength">
+    
+                
+                <label for="finishedreading">Have you read this book?</label><br>
+                <input type="checkbox" id="finishedreading" name="finishedreading" value="complete">
+               
+                <input type="submit">
+                <!--<a href="" class="button">Submit</a>-->
+               </form>
+            </div>
+          </div>
+
+          
+        
 
 
     </div>
