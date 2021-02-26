@@ -115,7 +115,16 @@ input[type="checkbox"]
     border-width: 1px;
 }
 
+#outerLibrary {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
+#outerLibrary div {
+    flex: 0 0 33.333%;
+    padding: 1em;
+}
 
 .card{
     width: 28rem;
@@ -142,19 +151,19 @@ input[type="checkbox"]
     font-size: 3rem;
     font-family: 'Playfair Display', sans-serif;
     margin-bottom: 1rem;
+    text-decoration: underline;
 }
 
 .paragraph{
     font-size: 1.6rem;
 }
 
-.btn{
+#btn{
     display: inline-block;
     font-size: 1.2rem;
     color: #333;
     background-color: #fff;
     text-decoration: none;
-    text-transform: uppercase;
     padding: 1rem 2rem;
     margin-top: 2.5rem;
     border-radius: 2rem;
@@ -162,6 +171,23 @@ input[type="checkbox"]
     transition: background-color .5s;
 }
 
-.btn:hover{
+#btn:hover{
     background-color: rgba(0,0,0,.1);
+}
+
+#delBtn{
+    display: inline-block;
+    font-size: 1.2rem;
+    color: rgb(122, 0, 0);
+    background-color: #fff;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    margin-top: 2.5rem;
+    border-radius: 2rem;
+    box-shadow: 1px 2px 1rem rgba(0,0,0,.1);
+    transition: background-color .5s;
+}
+
+#delBtn:hover{
+    background-color: rgba(255, 0, 0, 0.1);
 }
