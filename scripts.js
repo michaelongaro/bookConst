@@ -1,6 +1,14 @@
+/* current issues: 
+   - fixed height + auto width for cards 
+*/
+
 let myLibrary = [];
 
+let bookCountVals = [];
+
 let bookCount = 0;
+
+let vertContExists = false;
 
 function Book(title, author, pages, have_read) {
   this.title = title;
@@ -18,21 +26,29 @@ function Book(title, author, pages, have_read) {
 //      currently are to make things a bit easier. might have to change '.introText' a bit after though.
 function addBookToLibrary(title, author, pages, have_read) {
   myLibrary.push(new Book(title, author, pages, have_read));
-  console.log(myLibrary[0].info());
-
-  // will need to add dynamic functionality of paradigm (XD) below up here to properly display new books.
-
-
 }
 
 Book.prototype.changeRead = function() {
   this.have_read = !this.have_read;
 }
 
+function setFromColorModal(element) {
+  document.getElementById("libraryHeader").style.background = element.value;
+}
+
+function appendHeader() {
+  let firstname = document.getElementById("name").value;
+  let color = document.getElementById("colorpicker").value;
+  console.log(color);
+
+  document.getElementById("header").style.display = "flex";
+  document.getElementById("header").style.background = color;
+  document.getElementById("header").innerText = firstname + "'s Library";
+}
+
 
 function displayLibrary(a, b, c, d) {
 
-  let bodyElement = document.body;
   let outerLib = document.getElementById('outerLibrary');
   //The document.createElement() method create html elements specified by tagName
   let cardElement = document.createElement('div');
@@ -56,7 +72,7 @@ function displayLibrary(a, b, c, d) {
   pagesElement.className = "pages";
   completedElement.className = "bookCompletion";
   btnElement.id = "btn";
-  deleteBookElement.id = "delBtn";
+  deleteBookElement.className = "delBtn";
 
   /*document.getElementById('btn').addEventListener('click', function() {
     changeRead();
@@ -81,17 +97,14 @@ function displayLibrary(a, b, c, d) {
     completedElement.innerText = "Finished!";
   }
   // also let them rate :3 it right afterwords
+  // would probably need to extend (smoothly) the bottom of the element to allow for room of 5 star system, 
+  // when star is hovered make it turn yellow, and would maybe just need attribute(?) of class for number_stars
   btnElement.innerText = "Click to finish book";
   deleteBookElement.innerText = "Delete";
 
-  // need to (?) find a way to either access just the delete button/card/book obj that i want to 
-  //      or iterate through all books until you find the right one to delete <--- delete function specs
-  // index number in myLibray = data-attribute - 1 | when iterating array, have to look for (maybe use 
-  //                                                  querySelector()) attribute of 'data-number' = i-1;
+  cardElement.setAttribute("data-number", bookCount);
 
-  console.log("made it here!");
-
-  cardElement.setAttribute("data-number", ++bookCount);
+  deleteBookElement.id = `del${bookCount}`
 
   outerLib.append(cardElement);
   cardElement.append(infoContainer);
@@ -99,13 +112,32 @@ function displayLibrary(a, b, c, d) {
   //imageContainer.appendChild(imageElement);
   infoContainer.append(headingElement, paragraphElement, pagesElement, completedElement, btnElement, deleteBookElement);
 
-  // want to make this so that it targets only(? probably) the correct/newest del button/elem
-  // maybe can also just give all delete buttons same treatment and then have another function 
-  //            deal with the logic to decide which buttons correspond to which books!
-  // gl, and you got this man. you will get through this. i promise <3
-  document.getElementById('delBtn').addEventListener('click', function() {
-    console.log(document.querySelectorAll("div[data-number]"));
+  bookCountVals.push(bookCount);
+
+  btnElement.addEventListener('click', function() {
+    myLibrary[parseInt(cardElement.dataset.number)].changeRead();
+    if (myLibrary[parseInt(cardElement.dataset.number)].have_read) {
+      completedElement.innerText = "Finished!";
+      cardElement.style.backgroundColor = "rgba(13, 161, 18, .8)";
+    }
+    else {
+      completedElement.innerText = "Not Read Yet.";
+      cardElement.style.backgroundColor = "#f4f4f4";
+    }
   })
+
+
+  deleteBookElement.addEventListener('click', function() {
+    // maybe eventually find way to properly shift over index values/rewrite values into new array when deleting
+    myLibrary.splice(parseInt(cardElement.dataset.number), 1, "");
+    console.log(myLibrary);
+    cardElement.classList.add("card2");
+    cardElement.addEventListener('transitionend', () => cardElement.remove());
+    
+    //outerLib.removeChild(cardElement);
+  })
+
+  bookCount++;
 }
 
 document.getElementById('button').addEventListener('click', function() {
@@ -116,13 +148,18 @@ document.querySelector('.close').addEventListener('click', function () {
   document.querySelector('.bg-modal').style.display = 'none';
 })
 
+document.getElementById("colorpicker").addEventListener("onchange", () => setFromColorModal(this));
+
+let introText = document.getElementById('introText');
+
+/*introText.addEventListener('transitionend', () => introText.remove());*/
+
 document.getElementById('newBookForm').onsubmit = function() { 
   let a = document.getElementById('title').value;
   let b = document.getElementById('author').value;
   let c = document.getElementById('pagelength').value;
   //let d = document.getElementById('finishedreading').value;
   let d;
-  console.log(document.getElementById('finishedreading').checked);
   if (document.getElementById('finishedreading').checked) {
     d = true;
   }
@@ -130,12 +167,36 @@ document.getElementById('newBookForm').onsubmit = function() {
     d = false;
   }
 
-  console.log("d is:" + d);
-
   addBookToLibrary(a, b, c, d);
-  console.log("i have been run!");
-
   displayLibrary(a, b, c, d);
+
+  document.querySelector('.bg-modal').style.display = 'none';
+
+  appendHeader();
+
+  if (document.getElementById("wrapper").contains(document.getElementById("introText"))) {
+    console.log(document.getElementById("wrapper").contains(document.getElementById("introText")));
+
+    introText.addEventListener('transitionend', function() {
+      introText.remove();
+      document.getElementById("verticalContainer").removeAttribute("class", "hideVertContainer");
+
+      let carryoverButton = document.createElement('a');
+      carryoverButton.setAttribute("href", "#");
+      carryoverButton.className = "button";
+      carryoverButton.id = "newAddBook";
+      
+      carryoverButton.innerText = "Add New Book";
+      carryoverButton.style.display = "block";
+      document.getElementById("futureButton").append(carryoverButton);
+
+      carryoverButton.addEventListener('click', function() {
+        document.querySelector('.bg-modal').style.display = 'flex';
+      })
+    })
+
+    introText.classList.add("introText2");  
+  }
 
   return false;
 };

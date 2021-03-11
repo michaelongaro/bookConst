@@ -4,14 +4,26 @@ html, body {
     font-size: 10px;
   }
 
-.wrapper {
+#wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0;
     padding: 0;
     height: 100%;
-    background: repeating-linear-gradient(45deg, #5746a3, #5e9beb 300px, #a005e8 300px)
+    background: repeating-linear-gradient(90deg, #333, #06408b, #b658e2)
+}
+
+#header {
+
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 4em;
+    top: 0;
+    font-family: 'Delius', cursive;
+    font-size: 20pt;
 }
 
 .bg-modal {
@@ -27,6 +39,23 @@ html, body {
 
 }
 
+.first-modal-content {
+    width: 500px;
+    height: 500px;
+    background-color: white;
+    border-radius : 4px;
+    text-align: center;
+    padding: 20px;
+    position: absolute;
+    font-size: 16px;
+}
+
+.first-modal-content p {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-decoration: underline;
+}
+
 .modal-content {
     width: 500px;
     height: 400px;
@@ -35,6 +64,16 @@ html, body {
     text-align: center;
     padding: 20px;
     position: absolute;
+    font-size: 16px;
+}
+
+.horizContain label {
+    display: inline-block;
+}
+
+.horizContain input {
+    display: inline-block;
+    width: 50px;
 }
 
 #pagelength {
@@ -57,6 +96,10 @@ html, body {
     background-color: white;
     color: #1686d9;
     border: 2px solid #1686d9;
+}
+
+#newAddBook {
+    font-size: 14px;
 }
 
 input {
@@ -92,12 +135,27 @@ input {
     height:100px;
 }
 
-input[type="checkbox"]
-{
+input[type="checkbox"] {
     vertical-align:middle;
 }
 
-.introText {
+input[type="color"]{
+    width: 20%;
+}
+
+#verticalContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+
+#libraryHeader {
+    display: flex;
+    
+}
+
+#introText {
     text-align: center;
 	display: flex;
 	justify-content: center;
@@ -110,20 +168,45 @@ input[type="checkbox"]
     padding: 15px;
     font-weight: 700;
     line-height: 2em;
-    background-color: rgb(242, 145, 34);
+    background-color: rgba(242, 145, 34, .9);
     border-radius: 2em;
     border-width: 1px;
+    /*transition: opacity 2.5s ease-in-out;*/
+    -webkit-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
+}
+
+/* dont want hover here... */
+.introText2 {
+    opacity: 0;
+    /*display: none;*/
+
+}
+
+#futureButton {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 50px;
+    margin: 1em;
 }
 
 #outerLibrary {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 #outerLibrary div {
-    flex: 0 0 33.333%;
+    flex: 0 0 auto;
     padding: 1em;
+    margin: 1em;
+}
+
+.hideVertContainer {
+    display: none !important;
 }
 
 .card{
@@ -131,6 +214,12 @@ input[type="checkbox"]
     font-family: "Open Sans", sans-serif;
     background-color: #f4f4f4;
     box-shadow: 5px 5px 1rem rgba(0,0,0,.1);
+    -webkit-transition: opacity 2s ease-in-out;
+    transition: opacity 2s ease-in-out;
+}
+
+.card2 {
+    opacity: 0;
 }
 
 .image-container{
@@ -165,6 +254,7 @@ input[type="checkbox"]
     background-color: #fff;
     text-decoration: none;
     padding: 1rem 2rem;
+    margin-right: 5px;
     margin-top: 2.5rem;
     border-radius: 2rem;
     box-shadow: 1px 2px 1rem rgba(0,0,0,.1);
@@ -172,13 +262,13 @@ input[type="checkbox"]
 }
 
 #btn:hover{
-    background-color: rgba(0,0,0,.1);
+    background-color: lightgrey;
 }
 
-#delBtn{
+.delBtn{
     display: inline-block;
     font-size: 1.2rem;
-    color: rgb(122, 0, 0);
+    color: black;
     background-color: #fff;
     text-decoration: none;
     padding: 1rem 2rem;
@@ -188,6 +278,6 @@ input[type="checkbox"]
     transition: background-color .5s;
 }
 
-#delBtn:hover{
-    background-color: rgba(255, 0, 0, 0.1);
+.delBtn:hover{
+    background-color: rgb(187, 14, 14);
 }

@@ -10,15 +10,21 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Delius&display=swap" rel="stylesheet">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 
 <body>
+  <div id="header">
+        
+  </div>
 
-    <div class="wrapper">
+    <div id="wrapper">
 
-      <div class="introText">
-        Hello! Welcome to your personalized library.
+      <div id="introText">
+        Hello! Welcome to your personal library.
         <br>
         To get started, click the button below to add your first book!
 
@@ -27,19 +33,49 @@
         </div>
       </div>
 
+      
+
+      <div id="verticalContainer" class="hideVertContainer">
         <div id="outerLibrary">
 
-          
-
-
-
-
-
-
-
         </div>
-          <!--<button id="new-book">Add New Book</button>-->
-          
+
+        <div id="futureButton">
+ 
+        </div>
+      </div>
+
+          <div class="bg-modal">
+            <div class="first-modal-content">
+
+              <div class="close">+</div>
+              
+              <form action="" id="newBookForm">
+                <label for="name">Whose library is this?</label>
+                <input type="text" id="name" name="firstname" placeholder="First Name...">
+
+                <label for="color">Favorite color?</label>
+                <input type="color" id="colorpicker">
+
+                <p>Let's add your first book! Please fill out the form below 😀</p>
+
+                <label for="title">Title</label>
+                <input type="text" id="title" name="booktitle" placeholder="Book's Title...">
+            
+                <label for="author">Author</label>
+                <input type="text" id="author" name="author" placeholder="Book's Author...">
+    
+                <label for="pagelength">Number of Pages</label>
+                <input type="number" id="pagelength" name="pagelength">
+                
+                <div class="horizContain">
+                  <label for="finishedreading">Have you read this book?</label>
+                  <input type="checkbox" id="finishedreading" name="finishedreading">
+                </div>  
+                <input type="submit">
+               </form>
+            </div>
+          </div>
 
           <div class="bg-modal">
             <div class="modal-content">
@@ -56,24 +92,17 @@
     
                 <label for="pagelength">Number of Pages</label>
                 <input type="number" id="pagelength" name="pagelength">
-    
                 
-                <label for="finishedreading">Have you read this book?</label><br>
-                <input type="checkbox" id="finishedreading" name="finishedreading">
-               
+                <div class="horizContain">
+                  <label for="finishedreading">Have you read this book?</label>
+                  <input type="checkbox" id="finishedreading" name="finishedreading">
+                </div>  
                 <input type="submit">
-                <!--<a href="" class="button">Submit</a>-->
                </form>
             </div>
           </div>
 
-          
-        
-
-
     </div>
-
-
 
   <script src="scripts.js"></script>
 </body>
