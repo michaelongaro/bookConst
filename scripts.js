@@ -1,5 +1,7 @@
 /* current issues: 
    - fixed height + auto width for cards 
+   - need to account for previous books in storage (deletion/changing read status) + make them actual books 
+   - how to either contain vertical container with a scroll bar, or have it infinitely extend downwards (without extending into header or (footer* aka reset button))
 */
 
 let myLibrary = [];
@@ -8,7 +10,60 @@ let bookCountVals = [];
 
 let bookCount = 0;
 
+let noHeaderExists = true;
 let vertContExists = false;
+let loadedInFromStorage = false;
+
+let introText = document.getElementById('introText');
+
+document.getElementById('button').addEventListener('click', function() {
+  document.querySelector('.bg-modal').style.display = 'flex';
+})
+
+document.querySelector('.close').addEventListener('click', function () {
+  document.querySelector('.bg-modal').style.display = 'none';
+})
+
+document.getElementById("colorpicker").addEventListener("onchange", () => setFromColorModal(this));
+
+if(!localStorage.getItem('firstName')) {
+  console.log("we are fresh");
+} else {
+  setStyles();
+}
+
+function populateStorage() {
+  localStorage.setItem('firstName', document.getElementById('name').value);
+  localStorage.setItem('bgcolor', document.getElementById('colorpicker').value);
+  localStorage.setItem('library', JSON.stringify(myLibrary));
+}
+
+function accessAssets() {
+  let currentName = localStorage.getItem('firstName');
+  let currentColor = localStorage.getItem('bgcolor');
+
+  return [currentName, currentColor];
+}
+
+function setStyles() {
+  console.log("loading in saved content");
+  let [currentName, currentColor] = accessAssets();
+  let currentLibrary = JSON.parse(localStorage.getItem('library'));
+
+  if (!loadedInFromStorage) {
+    console.log({currentName, currentColor});
+
+    prepPostIntro();
+    appendHeader(currentName, currentColor);
+    loadedInFromStorage = true;
+  }
+
+  myLibrary = currentLibrary;
+
+  myLibrary.forEach(function (index) {
+     displayLibrary(index.title, index.author, index.pages, index.have_read);
+  });
+}
 
 function Book(title, author, pages, have_read) {
   this.title = title;
@@ -20,10 +75,6 @@ function Book(title, author, pages, have_read) {
   }
 }
 
-// submit button on the form will call this function i guess
-// will also need to remove '.introText' class/text visibility once book is added
-// not sure where to comment this but could keep layout, and have page scroll down to where the cards 
-//      currently are to make things a bit easier. might have to change '.introText' a bit after though.
 function addBookToLibrary(title, author, pages, have_read) {
   myLibrary.push(new Book(title, author, pages, have_read));
 }
@@ -36,14 +87,67 @@ function setFromColorModal(element) {
   document.getElementById("libraryHeader").style.background = element.value;
 }
 
-function appendHeader() {
-  let firstname = document.getElementById("name").value;
-  let color = document.getElementById("colorpicker").value;
-  console.log(color);
+function prepPostIntro() {
+  introText.remove();
+  document.getElementById("verticalContainer").removeAttribute("class", "hideVertContainer");
 
-  document.getElementById("header").style.display = "flex";
-  document.getElementById("header").style.background = color;
-  document.getElementById("header").innerText = firstname + "'s Library";
+  let carryoverButton = document.createElement('a');
+  carryoverButton.setAttribute("href", "#");
+  carryoverButton.className = "button";
+  carryoverButton.id = "newAddBook";
+  
+  carryoverButton.innerText = "Add New Book";
+  carryoverButton.style.display = "block";
+  document.getElementById("futureButton").append(carryoverButton);
+
+  carryoverButton.addEventListener('click', function() {
+    document.querySelector('.bg-modal').style.display = 'flex';
+  })
+
+  document.querySelector('.close').addEventListener('click', function () {
+    document.querySelector('.bg-modal').style.display = 'none';
+  })
+}
+
+function appendHeader(fname, c) {
+  let firstname, color;
+
+  if (fname === undefined && c === undefined) {
+    firstname = document.getElementById("name").value;
+    color = document.getElementById("colorpicker").value;
+  }
+  else {
+    firstname = fname;
+    color = c;
+  }
+
+  document.getElementById("libraryHeader").style.display = "flex";
+  document.getElementById("libraryHeader").style.background = color;
+  document.getElementById("libraryHeader").innerText = firstname + "'s Library";
+
+  document.getElementsByClassName('first-modal-content')[0].className = "modal-content";
+  document.getElementById("stockBook").style.display = "inline-block";
+  document.getElementById("name").style.display = "none";
+  document.getElementById("name1").style.display = "none";
+  document.getElementById("colorpicker").style.display = "none";
+  document.getElementById("colorpicker1").style.display = "none";
+  document.getElementById("instructions").style.display = "none";
+  noHeaderExists = false;
+
+  let clearStorage = document.createElement('button');
+  clearStorage.innerText = "Reset Library";
+  document.getElementById("yahoo").append(clearStorage);
+  document.getElementById("yahoo").style.display = "inline";
+  clearStorage.addEventListener("click", function() {
+    window.localStorage.clear();
+    loadedInFromStorage = false;
+    // fix dis later :3
+    if(!localStorage.getItem('firstName')) {
+      console.log("we are fresh");
+    } else {
+      setStyles();
+    }
+  })
 }
 
 
@@ -74,17 +178,12 @@ function displayLibrary(a, b, c, d) {
   btnElement.id = "btn";
   deleteBookElement.className = "delBtn";
 
-  /*document.getElementById('btn').addEventListener('click', function() {
-    changeRead();
-  })*/
-
-
   //Works the same way as the className property except it sets the source of the imageElement
-  //imageElement.src = "https://source.unsplash.com/random";
+  imageElement.src = "https://source.unsplash.com/random";
 
   // This sets the value of an attribute specified element. If exists then will be updated, otherwise the new attribute is added with the specified name and value
   //btnElement.setAttribute("href", "#");
-  //imageElement.setAttribute("alt", "Image from Unsplash");
+  imageElement.setAttribute("alt", "Image from Unsplash");
 
   // need to wrap these values in a function before they are
   headingElement.innerText = a;
@@ -109,7 +208,7 @@ function displayLibrary(a, b, c, d) {
   outerLib.append(cardElement);
   cardElement.append(infoContainer);
 
-  //imageContainer.appendChild(imageElement);
+  imageContainer.appendChild(imageElement);
   infoContainer.append(headingElement, paragraphElement, pagesElement, completedElement, btnElement, deleteBookElement);
 
   bookCountVals.push(bookCount);
@@ -131,34 +230,26 @@ function displayLibrary(a, b, c, d) {
     // maybe eventually find way to properly shift over index values/rewrite values into new array when deleting
     myLibrary.splice(parseInt(cardElement.dataset.number), 1, "");
     console.log(myLibrary);
-    cardElement.classList.add("card2");
     cardElement.addEventListener('transitionend', () => cardElement.remove());
-    
-    //outerLib.removeChild(cardElement);
+    cardElement.classList.add("card2");
   })
 
   bookCount++;
 }
 
-document.getElementById('button').addEventListener('click', function() {
-  document.querySelector('.bg-modal').style.display = 'flex';
-})
 
-document.querySelector('.close').addEventListener('click', function () {
-  document.querySelector('.bg-modal').style.display = 'none';
-})
 
-document.getElementById("colorpicker").addEventListener("onchange", () => setFromColorModal(this));
-
-let introText = document.getElementById('introText');
+//let introText = document.getElementById('introText');
 
 /*introText.addEventListener('transitionend', () => introText.remove());*/
+
+// want: to keep both bg-modals relatively the same, and just fucking delete the first one when it is done
+// can't do b/c: need(?) to have diff ids for the two forms
 
 document.getElementById('newBookForm').onsubmit = function() { 
   let a = document.getElementById('title').value;
   let b = document.getElementById('author').value;
   let c = document.getElementById('pagelength').value;
-  //let d = document.getElementById('finishedreading').value;
   let d;
   if (document.getElementById('finishedreading').checked) {
     d = true;
@@ -172,31 +263,16 @@ document.getElementById('newBookForm').onsubmit = function() {
 
   document.querySelector('.bg-modal').style.display = 'none';
 
-  appendHeader();
-
   if (document.getElementById("wrapper").contains(document.getElementById("introText"))) {
     console.log(document.getElementById("wrapper").contains(document.getElementById("introText")));
 
-    introText.addEventListener('transitionend', function() {
-      introText.remove();
-      document.getElementById("verticalContainer").removeAttribute("class", "hideVertContainer");
-
-      let carryoverButton = document.createElement('a');
-      carryoverButton.setAttribute("href", "#");
-      carryoverButton.className = "button";
-      carryoverButton.id = "newAddBook";
-      
-      carryoverButton.innerText = "Add New Book";
-      carryoverButton.style.display = "block";
-      document.getElementById("futureButton").append(carryoverButton);
-
-      carryoverButton.addEventListener('click', function() {
-        document.querySelector('.bg-modal').style.display = 'flex';
-      })
-    })
-
-    introText.classList.add("introText2");  
+    //introText.addEventListener('transitionend', function() {
+      prepPostIntro();
+      appendHeader();
+    //})
+    introText.classList.add("introText2");
   }
 
+  populateStorage();
   return false;
 };

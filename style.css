@@ -14,8 +14,7 @@ html, body {
     background: repeating-linear-gradient(90deg, #333, #06408b, #b658e2)
 }
 
-#header {
-
+#libraryHeader {
     display: none;
     justify-content: center;
     align-items: center;
@@ -80,6 +79,10 @@ html, body {
     width: 10%;
 }
 
+#ppagelength {
+    width: 10%;
+}
+
 .button {
 	background-color: #1686d9;
 	border: 2px solid white;
@@ -131,6 +134,7 @@ input {
 }
 
 #stockBook {
+    display: none;
     width:175px;
     height:100px;
 }
@@ -148,11 +152,6 @@ input[type="color"]{
     flex-direction: column;
     justify-content: center;
     width: 100%;
-}
-
-#libraryHeader {
-    display: flex;
-    
 }
 
 #introText {
@@ -176,11 +175,8 @@ input[type="color"]{
     transition: opacity 1s ease-in-out;
 }
 
-/* dont want hover here... */
-.introText2 {
+#introText2 {
     opacity: 0;
-    /*display: none;*/
-
 }
 
 #futureButton {
@@ -239,6 +235,7 @@ input[type="color"]{
 .heading{
     font-size: 3rem;
     font-family: 'Playfair Display', sans-serif;
+    margin-top: 3.5rem;
     margin-bottom: 1rem;
     text-decoration: underline;
 }
@@ -279,5 +276,19 @@ input[type="color"]{
 }
 
 .delBtn:hover{
-    background-color: rgb(187, 14, 14);
+    background-color: rgb(185, 36, 36);
+    color: rgb(207, 207, 207);
+}
+
+.hideItem {
+    display: none;
+}
+
+#yahoo {
+    display: none;
+    position: absolute;
+    left: 0;
+    bottom: -7em;
+    width: 100%;
+    text-align: center;
 }
